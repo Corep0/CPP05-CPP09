@@ -6,7 +6,7 @@
 /*   By: seruff <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/29 09:07:41 by seruff            #+#    #+#             */
-/*   Updated: 2025/09/30 09:44:30 by seruff           ###   ########.fr       */
+/*   Updated: 2025/09/30 15:10:40 by seruff           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,10 @@
 
 # include <iostream>
 # include <exception>
+# include "AForm.hpp"
+
+class	AForm;
+
 class	Bureaucrat
 {
 	public:
@@ -28,9 +32,11 @@ class	Bureaucrat
 		Bureaucrat& operator=(const Bureaucrat& other);
 		
 		// Member Function
-		void  increment(void);
-		void  decrement(void);
-		
+		void	increment(void);
+		void	decrement(void);
+		void	signForm(AForm &form);
+		void	executeForm(AForm const& form) const;
+
 		// Getter | Setter
 		std::string	getName(void) const;
 		int		getGrade(void) const;

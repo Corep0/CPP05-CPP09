@@ -6,7 +6,7 @@
 /*   By: seruff <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/29 09:12:43 by seruff            #+#    #+#             */
-/*   Updated: 2025/09/29 12:33:11 by seruff           ###   ########.fr       */
+/*   Updated: 2025/09/30 09:50:37 by seruff           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,4 +37,46 @@ int	main(void)
 	createBureaucrat("Jack2", 1);
 	createBureaucrat("Jack3", -1);
 	createBureaucrat("Jack4", 151);
+	std::cout << "*************************************************" 
+		<< std::endl;
+
+	Bureaucrat	*a = new Bureaucrat("Joe", 150);
+	try{
+		a->increment();
+	}
+	catch (Bureaucrat::GradeTooLowException &e)
+	{
+		std::cout << *a;
+	}
+	std::cout << *a;
+	try{
+		a->decrement();
+	}
+	catch (Bureaucrat::GradeTooLowException &e)
+	{
+		std::cout << *a;
+	}
+	std::cout << *a;
+	delete a;
+
+	Bureaucrat	*b = new Bureaucrat();
+	try{
+		b->increment();
+	}
+	catch (Bureaucrat::GradeTooLowException &e)
+	{
+		std::cout << *b;
+	}
+	std::cout << *b;
+
+	try{
+		b->decrement();
+	}
+	catch (Bureaucrat::GradeTooLowException &e)
+	{
+		std::cout << *b;
+	}
+	std::cout << *b;
+	delete b;
+
 }

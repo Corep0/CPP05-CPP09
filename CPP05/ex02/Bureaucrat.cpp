@@ -6,7 +6,7 @@
 /*   By: seruff <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/29 09:06:23 by seruff            #+#    #+#             */
-/*   Updated: 2025/09/30 12:01:04 by seruff           ###   ########.fr       */
+/*   Updated: 2025/09/30 15:19:26 by seruff           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,15 +67,19 @@ void	Bureaucrat::decrement(void)
 	this->setGrade(this->_grade + 1);
 }
 
-void	Bureaucrat::signForm(Form &form)
+void	Bureaucrat::signForm(AForm &form)
 {
-	std::cout << "Sending request to sign the form: " << form.getNameForm()
+	std::cout << "Sending request to sign the form: " << form.getNameAForm()
 		<< "\n\tOperator grade is " << getName() << " grade " << getGrade()
 		<< " to sign a file with a requirement of " << form.getRequiredSigned()
 		<< std::endl;
 	form.beSigned(*this);
 }
 
+void	Bureaucrat::executeForm(AForm const& form) const
+{
+	form.execute(*this);
+}
 /*	Exception Class 	*/
 const char*	Bureaucrat::GradeTooHighException::what() const
 {

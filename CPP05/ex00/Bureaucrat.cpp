@@ -6,7 +6,7 @@
 /*   By: seruff <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/29 09:06:23 by seruff            #+#    #+#             */
-/*   Updated: 2025/09/29 14:14:37 by seruff           ###   ########.fr       */
+/*   Updated: 2025/09/30 09:44:45 by seruff           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,23 +15,20 @@
 /*
  * Constructor | Default Constructor | Destructor | Copy Constructor
 */
-Bureaucrat::Bureaucrat()
+Bureaucrat::Bureaucrat(void): _name("Default"), _grade(75)
 {
-	this->_name = "Default";
-	this->_grade = 75;
-	std::cout << "Bureaucrat constructor is called by Default" << std::endl;
+	std::cout << "Bureaucrat Default"
+		<< " constructor is called with a grade of "
+		<< _grade << std::endl;
 }
 
 Bureaucrat::Bureaucrat(std::string name, int grade)
 {
 	this->_name = name;
-	std::cout << "Initial grade is : " << grade << std::endl;
-	if (grade < 1)
-		throw GradeTooHighException();
-	else if (grade > 150)
-		throw GradeTooLowException();
-	this->_grade = grade;
-	std::cout << "Bureaucrat constructor is called" << std::endl;
+	std::cout << "Bureaucrat " << name
+		<< " constructor is called with a grade of "
+		<< grade << std::endl;
+	setGrade(grade);
 }
 
 Bureaucrat::~Bureaucrat()
@@ -41,18 +38,11 @@ Bureaucrat::~Bureaucrat()
 
 Bureaucrat::Bureaucrat(Bureaucrat const& copy)
 {
-	if (this->_grade - 1 < 1)
-		throw GradeTooHighException();
-	else if (this->_grade - 1 > 150)
-		throw GradeTooLowException();
-	this->_name = copy._name;
-	this->_grade = copy._grade;
-	std::cout << "Copied constructor is called" << std::endl;
+	std::cout << "Bureaucrat Copy constructor is called" << std::endl;
+	*this = copy;
 }
 
-/*
- * Assignement Operator
-*/
+/*	Assignement Operator 	*/
 Bureaucrat& Bureaucrat::operator=(const Bureaucrat& other)
 {
 	std::cout << "Assignement operator is called" << std::endl;
@@ -64,51 +54,31 @@ Bureaucrat& Bureaucrat::operator=(const Bureaucrat& other)
 	return (*this);
 }
 
-Bureaucrat Bureaucrat::operator++(int)
+/*	Member Function		*/
+void Bureaucrat::increment(void)
 {
-	if (this->_grade - 1 < 1)
-		throw GradeTooHighException();
-	else if (this->_grade - 1 > 150)
-		throw GradeTooLowException();
-	Bureaucrat	temp(*this);
-	this->_grade -= 1;
-	return (temp);
+	std::cout << "Incrementing grade for " << this->getName() << std::endl;
+	this->setGrade(this->_grade - 1);
 }
 
-Bureaucrat Bureaucrat::operator--(int)
+void Bureaucrat::decrement(void)
 {
-	if (this->_grade + 1 < 1)
-		throw GradeTooHighException();
-	else if (this->_grade + 1 > 150)
-		throw GradeTooLowException();
-	Bureaucrat	temp(*this);
-	this->_grade += 1;
-	return (temp);
+	std::cout << "Decrementing grade for " << this->getName() << std::endl;
+	this->setGrade(this->_grade + 1);
 }
 
-std::ostream& operator<<(std::ostream& out, const Bureaucrat& b)
-{
-	out << b.getName() << ", bureaucrat grade " << b.getGrade() << std::endl;
-	return (out);
-}
-
-/*
- * Exception Class 
-*/
+/*	Exception Class 	*/
 const char*	Bureaucrat::GradeTooHighException::what() const
 {
-	return ("Grade is to high < 1");
+	return ("\033[31mGrade is to high < 1\033[0m");
 }
 
 const char*	Bureaucrat::GradeTooLowException::what() const
 {
-	return ("Grade is to low > 150");
+	return ("\033[31mGrade is to low > 150\033[0m");
 }
 
-
-/*
- * Getter
-*/
+/*	Getter | Setter		*/
 std::string Bureaucrat::getName(void) const
 {
 	return (this->_name);
@@ -118,3 +88,26 @@ int	Bureaucrat::getGrade(void) const
 {
 	return (this->_grade);
 }
+
+void	Bureaucrat::setName(std::string new_name)
+{
+	this->_name = new_name;
+}
+
+void	Bureaucrat::setGrade(int val)
+{
+	if (val < 1)
+		throw GradeTooHighException();
+	else if (val > 150)
+		throw GradeTooLowException();
+	else
+		this->_grade = val;
+}
+
+/*	Function	*/
+std::ostream& operator<<(std::ostream& out, Bureaucrat& b)
+{
+	out << b.getName() << ", bureaucrat grade " << b.getGrade() << std::endl;
+	return (out);
+}
+

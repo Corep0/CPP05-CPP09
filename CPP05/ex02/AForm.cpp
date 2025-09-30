@@ -1,19 +1,19 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   Form.cpp                                           :+:      :+:    :+:   */
+/*   AForm.cpp                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: seruff <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/30 10:05:37 by seruff            #+#    #+#             */
-/*   Updated: 2025/09/30 12:14:47 by seruff           ###   ########.fr       */
+/*   Updated: 2025/09/30 15:12:14 by seruff           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "Form.hpp"
+#include "AForm.hpp"
 
 // Constructor | Destructor
-Form::Form(std::string name, bool state_signed, int req_sign, int req_exec):
+AForm::AForm(std::string name, bool state_signed, int req_sign, int req_exec):
 	name(name), state_signed(state_signed), req_sign(req_sign), req_exec(req_exec)
 {
 	const int	a = req_sign;
@@ -22,23 +22,23 @@ Form::Form(std::string name, bool state_signed, int req_sign, int req_exec):
 		throw GradeTooHighException();
 	else if (a > 150 || b > 150)
 		throw GradeTooLowException();
-	std::cout << "Form Construtor is called for the form " << this->name << std::endl;
+	std::cout << "AForm Construtor is called for the AForm " << this->name << std::endl;
 }
 
-Form::~Form()
+AForm::~AForm()
 {
-	std::cout << "Form Destructor is called for the form " << this->name << std::endl;
+	std::cout << "AForm Destructor is called for the AForm " << this->name << std::endl;
 }
 
-Form::Form(Form const& copy): name(copy.getNameForm()), state_signed(false)
+AForm::AForm(AForm const& copy): name(copy.getNameAForm()), state_signed(false)
 			      , req_sign(copy.getRequiredSigned()), req_exec(copy.getRequiredExec())
 {
-	std::cout << "Form copy is called" << std::endl;
+	std::cout << "AForm copy is called" << std::endl;
 	*this = copy;
 }
 
 // Operator
-Form&	Form::operator=(const Form& other)
+AForm&	AForm::operator=(const AForm& other)
 {
 	std::cout << "Assignement operator is called" << std::endl;
 	if (this != &other)
@@ -47,62 +47,75 @@ Form&	Form::operator=(const Form& other)
 }
 
 // Member Function
-void	Form::beSigned(Bureaucrat &b)
+void	AForm::beSigned(Bureaucrat &b)
 {
 	if (b.getGrade() <= this->req_sign && getStateSigned() != true)
 	{
-		std::cout << "Bureaucrat " << b.getName() << " signed form "
+		std::cout << "Bureaucrat " << b.getName() << " signed AForm "
 			<< this->name << std::endl;
 		this->state_signed = true;
 	}
 	else if (b.getGrade() <= this->req_sign && getStateSigned() == true)
 	{
-		std::cout << "Form " << getNameForm() << " is already signed" << std::endl;
+		std::cout << "AForm " << getNameAForm() << " is already signed" << std::endl;
 	}
 	else
 	{
 		std::cout << "Bureaucrat " << b.getName()
-			<< " couldn't sign form " << this->name
+			<< " couldn't sign AForm " << this->name
 			<< " because ";
 		throw(Bureaucrat::GradeTooLowException());
 	}
-		
+}
+void	AForm::execute(Bureaucrat const& executor) const
+{
+	(void)executor;
 }
 
 // Getter | Setter
-std::string	Form::getNameForm(void) const
+std::string	AForm::getNameAForm(void) const
 {
 	return (this->name);
 }
 
-bool		Form::getStateSigned(void) const
+bool		AForm::getStateSigned(void) const
 {
 	return (this->state_signed);
 }
 
-int		Form::getRequiredSigned(void) const
+int		AForm::getRequiredSigned(void) const
 {
 	return (this->req_sign);
 }
 
-int		Form::getRequiredExec(void) const
+int		AForm::getRequiredExec(void) const
 {
 	return (this->req_exec);
 }
 
 // Exception class
-const char*	Form::GradeTooHighException::what() const
+const char*	AForm::GradeTooHighException::what() const
 {
 	return ("\033[31mGrade is to high < 1\033[0m");
 }
 
-const char*	Form::GradeTooLowException::what() const
+const char*	AForm::GradeTooLowException::what() const
 {
 	return ("\033[31mGrade is to low > 150\033[0m");
 }
 
+const char*	AForm::FileIsNotSigned::what() const
+{
+	return ("\033[31mCan't exec because File isn't not signed\033[0m");
+}
+
+const char*	AForm::FormCantBeExecuted::what() const
+{
+	return ("\033[31mCan't exec because grade isn't high enough\033[0m");
+}
+
 // Function
-std::ostream&	operator<<(std::ostream& out, Form &f)
+std::ostream&	operator<<(std::ostream& out, AForm &f)
 {
 	std::string	bool_state;
 
@@ -110,7 +123,7 @@ std::ostream&	operator<<(std::ostream& out, Form &f)
 		bool_state = "signed";
 	else
 		bool_state = "not signed";
-	out << "Form " << f.getNameForm() << " is "
+	out << "AForm " << f.getNameAForm() << " is "
 		<< bool_state << " grade required to be signed is "
 		<< f.getRequiredSigned() << " grade required to be exec is "
 		<< f.getRequiredExec() << std::endl;
