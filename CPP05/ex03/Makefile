@@ -3,29 +3,37 @@ CC = c++
 CF = -Wall -Werror -Wextra -std=c++98 -g
 
 # Program
-PROG = Form 
+NAME = Form 
+
+# Header
+INC = -I include/.
 
 # Sources
-SRC =	Bureaucrat.cpp	\
-	Form.cpp	\
-      	main.cpp
+SRCD = src/
+SRC =	$(SRCD)Bureaucrat.cpp	\
+	$(SRCD)Form.cpp	\
+      	$(SRCD)main.cpp
 #Color
 GC = \033[0;32m
 RC = \033[0;31m
 ENDC = \033[0m
 
-all:	$(PROG)
+all:	$(NAME)
 
-$(PROG):	$(SRC)
-		@echo "$(GC)Compiling program $(PROG)..$(ENDC)"
-		$(CC) $(CF) -o $(PROG) $(SRC)
-		@echo "$(RC) $(PROG) ready to be used $(ENDC)"
+$(NAME):	$(SRC)
+		@echo "$(GC)Compiling program $(NAME)..$(ENDC)"
+		$(CC) $(CF) $(INC) -o $(NAME) $(SRC)
+		@echo "$(RC) $(NAME) ready to be used $(ENDC)"
 
 clean:
-		@rm -f $(PROG)
-		@echo "$(GC) $(PROG) removed$(ENDC)"
+		@rm -f $(NAME)
+		@echo "$(GC) $(NAME) removed$(ENDC)"
 
-re :		clean all
+fclean:		clean
+		@rm -f $(NAME)
+		@echo "$(GC) $(NAME) removed$(ENDC)"
 
-.PHONY:		re clean all
+re :		fclean all
+
+.PHONY:		re clean fclean all
 	

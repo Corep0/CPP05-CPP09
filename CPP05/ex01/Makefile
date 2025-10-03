@@ -1,31 +1,44 @@
 # Compilator
 CC = c++
-CF = -Wall -Werror -Wextra -std=c++98 -g
+CF = -Wall -Werror -Wextra -std=c++98
 
 # Program
-PROG = Form 
+NAME = Bureaucrat 
+
+# Header
+INC = -I include/.
 
 # Sources
-SRC =	Bureaucrat.cpp	\
-	Form.cpp	\
-      	main.cpp
-#Color
+SRCD = src/
+SRC =	$(SRCD)main.cpp	\
+	$(SRCD)Bureaucrat.cpp \
+	$(SRCD)Form.cpp
+
+OBJ = $(SRC:.cpp=.o)
+
+# Color
 GC = \033[0;32m
 RC = \033[0;31m
+BC = \033[0;34m
 ENDC = \033[0m
 
-all:	$(PROG)
+all: 		$(NAME)
 
-$(PROG):	$(SRC)
-		@echo "$(GC)Compiling program $(PROG)..$(ENDC)"
-		$(CC) $(CF) -o $(PROG) $(SRC)
-		@echo "$(RC) $(PROG) ready to be used $(ENDC)"
+$(NAME):	$(OBJ)
+		@echo "$(GC) Compiling $(NAME) program..$(ENDC)"
+		$(CC) $(CF) $(INC) -o $(NAME) $(OBJ)
+		@echo "$(GC) $(NAME) ready to be used $(ENDC)"
 
-clean:
-		@rm -f $(PROG)
-		@echo "$(GC) $(PROG) removed$(ENDC)"
+%.o: %.cpp
+		$(CC) $(CF) $(INC) -c $< -o $@
 
-re :		clean all
+clean:	
+		@rm -f $(OBJ)
 
-.PHONY:		re clean all
-	
+fclean:		clean
+		@rm -f $(NAME)
+
+re:		fclean all
+
+.PHONY:		re fclean clean all
+
